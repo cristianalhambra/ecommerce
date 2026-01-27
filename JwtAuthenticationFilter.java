@@ -28,6 +28,16 @@ import java.io.IOException;
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        System.out.println("FILTRO JWT EJECUTADO: " + request.getServletPath());
+
+        String path = request.getServletPath();
+
+        // ⛔ EXCLUIR login y register del filtro
+        if (path.equals("/api/auth/login") || path.equals("/api/auth/register") || path.startsWith("/api/products/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -37,6 +47,8 @@ import java.io.IOException;
 
         String token = authHeader.substring(7);
         String email = jwtService.extractEmail(token);
+
+        System.out.println("TOKEN VALIDADO PARA: " + email);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

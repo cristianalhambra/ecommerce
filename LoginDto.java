@@ -5,5 +5,5 @@ package com.tienda.ecommerce.auth.dto;
  * Mapea los campos enviados desde el formulario de Angular.
  */
 
-public record LoginDto (String email, com.tienda.ecommerce.model.User password) {}
+public record LoginDto (String name, String email, String password) {}
 

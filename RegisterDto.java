@@ -10,5 +10,5 @@ import lombok.AllArgsConstructor;
  * Mapea los campos enviados desde el formulario de Angular.
  */
 
-public record RegisterDto(String email, String password) {}
+public record RegisterDto(String name, String email, String password) {}
 

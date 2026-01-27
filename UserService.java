@@ -1,11 +1,15 @@
 package com.tienda.ecommerce.service;
 
-import com.tienda.ecommerce.model.User;
+import com.tienda.ecommerce.auth.dto.UpdateAddressDto;
 import com.tienda.ecommerce.model.Address;
+import com.tienda.ecommerce.model.User;
 import com.tienda.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 public class UserService {
@@ -21,9 +25,9 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
-    public User updateEmail(Long userId, String newEmail) {
+    public void updateEmail(Long userId, String newEmail) {
         User user = findById(userId); user.setEmail(newEmail);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public void updatePassword(Long userId, String currentPassword, String newPassword) {
@@ -37,15 +41,31 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User updateAddress(Long userId, Address address) {
-        User user = findById(userId);
-        user.setAddress(address);
-        return userRepository.save(user);
+    public void updateAddress(Long userId, UpdateAddressDto dto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Address address = user.getAddress();
+        if(address == null) {
+            address = new Address();
+            user.setAddress(address);
+        }
+
+        address.setFullName(dto.fullName());
+        address.setStreet(dto.street());
+        address.setCity(dto.city());
+        address.setPostalCode(dto.postalCode());
+        address.setCountry(dto.country());
+        userRepository.save(user);
     }
 
-    public User updateAvatar(Long userId, String avatarUrl) {
-        User user = findById(userId); user.setAvatarUrl(avatarUrl);
-        return userRepository.save(user);
+    public String updateAvatar(Long userId, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Aquí guardas el archivo donde quieras
+        String avatarUrl = "uploads/" + file.getOriginalFilename();
+        user.setAvatarUrl(avatarUrl);
+        userRepository.save(user); return avatarUrl;
     }
     public void deleteAccount(Long userId) {
         userRepository.deleteById(userId);

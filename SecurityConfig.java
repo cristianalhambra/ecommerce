@@ -2,7 +2,6 @@ package com.tienda.ecommerce.config;
 
 import com.tienda.ecommerce.security.JwtAuthenticationFilter;
 import com.tienda.ecommerce.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,7 +20,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -56,12 +54,9 @@ public class SecurityConfig {
                 // Configura la autorización de peticiones
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", // Permite acceso a la raíz
-                                "/error", // Permite acceso a la página de error
-                                "/api/auth/**", // Permite acceso a endpoints de autenticación (login, register)
-                                "/api/products/**", // Permite acceso a endpoints de productos
-                                "/api/swagger-ui/**", // Permite acceso a Swagger UI
-                                "/api/v3/api-docs/**" // Permite acceso a API docs
+                                "/api/auth/login", // Permite acceso a endpoints de autenticación (login, register)
+                                         "api/auth/register",
+                                         "/api/products/**" // Permite acceso público a productos
                         ).permitAll()
                         // Cualquier otra petición (como login) debe ser autenticada
                         .anyRequest().authenticated()
