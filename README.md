@@ -106,12 +106,6 @@ DELETE /api/products/{id}
  
   [ ] Mejorar la interfaz con fotos y un estilo de página sencillo
 
-### 📌 Próximos pasos
-  
-  Añadir roles (admin / user)
-  
-  Mejorar UI en Angular
-
 📄 Licencia
 
 Proyecto personal de aprendizaje. Uso libre para estudio.
