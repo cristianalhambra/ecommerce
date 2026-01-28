@@ -1,7 +1,9 @@
 package com.tienda.ecommerce.config;
 
+import com.tienda.ecommerce.security.CustomAuthEntryPoint;
 import com.tienda.ecommerce.security.JwtAuthenticationFilter;
 import com.tienda.ecommerce.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,6 +26,9 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private CustomAuthEntryPoint customAuthEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,12 +55,16 @@ public class SecurityConfig {
         http
                 // Deshabilita la protección CSRF (necesario para APIs REST simples)
                 .csrf(AbstractHttpConfigurer::disable)
+                // Maneja errores de autenticación
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthEntryPoint)
+                )
 
                 // Configura la autorización de peticiones
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login", // Permite acceso a endpoints de autenticación (login, register)
-                                         "api/auth/register",
+                                         "/api/auth/register",
                                          "/api/products/**" // Permite acceso público a productos
                         ).permitAll()
                         // Cualquier otra petición (como login) debe ser autenticada

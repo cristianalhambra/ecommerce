@@ -33,7 +33,7 @@ import java.io.IOException;
         String path = request.getServletPath();
 
         // ⛔ EXCLUIR login y register del filtro
-        if (path.equals("/api/auth/login") || path.equals("/api/auth/register") || path.startsWith("/api/products/")) {
+        if (path.equals("/api/auth/") || path.startsWith("/api/products/")) {
             filterChain.doFilter(request, response);
             return;
         }

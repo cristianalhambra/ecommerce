@@ -25,6 +25,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
+    public void updateName(Long userId, String newName) {
+        User user = findById(userId); user.setName(newName);
+        userRepository.save(user);
+    }
+
     public void updateEmail(Long userId, String newEmail) {
         User user = findById(userId); user.setEmail(newEmail);
         userRepository.save(user);
@@ -50,7 +55,6 @@ public class UserService {
             user.setAddress(address);
         }
 
-        address.setFullName(dto.fullName());
         address.setStreet(dto.street());
         address.setCity(dto.city());
         address.setPostalCode(dto.postalCode());

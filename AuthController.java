@@ -75,6 +75,13 @@ public class AuthController {
         return ResponseEntity.ok("Usuario registrado");
     }
 
+    @PutMapping("update-name")
+    public ResponseEntity<?> updateName(@RequestBody UpdateNameDto dto, @AuthenticationPrincipal UserPrincipal principal) {
+        Long userId = principal.getUser().getId();
+        userService.updateName(userId, dto.name());
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/update-email")
     public ResponseEntity<?> updateEmail(@RequestBody UpdateEmailDto dto, @AuthenticationPrincipal UserPrincipal principal){
         Long userId = principal.getUser().getId();
