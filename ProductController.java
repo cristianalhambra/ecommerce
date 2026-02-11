@@ -75,7 +75,7 @@ public class ProductController {
         return ResponseEntity.ok(Map.of("imageUrl", url));
     }
     // ASIGNAR IMAGEN A PRODUCTO
-    @PutMapping("/{id}/image") public ResponseEntity<?> setProductImage(
+    @PutMapping("/{id}/image") public ResponseEntity<?> setProductImageUrl(
             @PathVariable Long id,
             @RequestBody Map<String, String> body ) {
         String imageUrl = body.get("imageUrl");

@@ -63,8 +63,7 @@ public class SecurityConfig {
                 // Configura la autorización de peticiones
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/login", // Permite acceso a endpoints de autenticación (login, register)
-                                         "/api/auth/register",
+                                "/api/auth/**", // Permite acceso público a endpoints de autenticación
                                          "/api/products/**", // Permite acceso público a productos
                                          "/product-images/**", // Permite acceso a imágenes de productos
                                          "/uploads/**"  // Permite acceso a imágenes subidas
@@ -86,12 +85,11 @@ public class SecurityConfig {
         // Angular se está ejecutando en 4200
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Cabeceras permitidas
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
         // Permitir que el navegador exponga las cabeceras de respuesta
-        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

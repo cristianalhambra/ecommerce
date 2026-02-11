@@ -16,7 +16,7 @@ import java.io.IOException;
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 
-        String json = "{ \"error\": \"Email o contraseña incorrectos\" }";
+        String json = "{ \"error\": \"No autorizado. Token inválido o ausente.\"  }";
         response.getWriter().write(json);
     }
 }

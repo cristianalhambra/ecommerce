@@ -32,8 +32,14 @@ import java.io.IOException;
 
         String path = request.getServletPath();
 
+        // Excluir OPTIONS (CORS preflight)
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // ⛔ EXCLUIR login y register del filtro
-        if (path.equals("/api/auth/") || path.startsWith("/api/products/")) {
+        if (path.startsWith("/api/auth/") || path.startsWith("/api/products/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -60,7 +66,7 @@ import java.io.IOException;
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                principal.getUser(),// 👈 AHORA EL PRINCIPAL ES User
                                 null,
                                 userDetails.getAuthorities()
                         );

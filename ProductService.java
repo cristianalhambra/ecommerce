@@ -31,11 +31,11 @@ public class ProductService {
         return "http://localhost:8080/product-images/" + fileName;
     }
 
-    public Product updateProductImage(Long productId, String imageUrl) {
+    public Product updateProductImage(Long productId, String image) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        product.setImageUrl(imageUrl);
+        product.setImageUrl(product.getImageUrl());
         return productRepository.save(product);
     }
 }
